@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { use } from "react";
 import Closing from "./components/closing";
 import Input from "./components/input";
 import RadioGroup from "./components/radioGroup";
@@ -12,7 +11,7 @@ function App() {
     const saved = localStorage.getItem("todos");
     return saved ? JSON.parse(saved) : [];
   });
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({ title: "", desc: "", status: "To do" });
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -23,13 +22,20 @@ function App() {
   };
 
   const handleSubmit = () => {
+    if (!form.title || !form.desc) return; // biar gak kosong
     setTodos([...todos, form]);
     setForm({ title: "", desc: "", status: "To do" });
   };
 
+  // fungsi hapus
+  const handleDelete = (index) => {
+    const newTodos = todos.filter((_, i) => i !== index);
+    setTodos(newTodos);
+  };
+
   return (
     <>
-      <Closing text="To do List" />
+      <Closing text="To do List" className="title" />
 
       <Input
         label="Judul"
@@ -46,14 +52,16 @@ function App() {
         onChange={handleChange}
         placeholder="Masukan deskripsi."
       />
-      <RadioGroup
-        label="status"
-        name="status"
-        options={["To do", "In Progress", "Done"]}
-        value={form.status}
-        onChange={handleChange}
-      />
-      <Button onClick={handleSubmit}>Tambah</Button>
+      <div className="form-actions">
+        <RadioGroup
+          label="status"
+          name="status"
+          options={["To do", "In Progress", "Done"]}
+          value={form.status}
+          onChange={handleChange}
+        />
+        <Button onClick={handleSubmit}>Tambah</Button>
+      </div>
 
       {/* Nampilin si cardnya */}
       <div>
@@ -63,10 +71,11 @@ function App() {
             title={todo.title}
             desc={todo.desc}
             status={todo.status}
+            onDelete={() => handleDelete(i)} // kirim fungsi hapus
           />
         ))}
       </div>
-      <Closing text="Copyright 2025" />
+      <Closing text="Copyright 2025" className="title" />
     </>
   );
 }

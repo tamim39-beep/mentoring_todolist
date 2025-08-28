@@ -40,3 +40,26 @@
 .read-the-docs {
   color: #888;
 }
+
+.form-actions {
+  display: flex;
+  flex-direction: column; /* biar radio di atas, button di bawah */
+  align-items: center; /* biar ke tengah */
+  gap: 20px; /* jarak antar elemen */
+  margin-top: 30px;
+}
+
+.title {
+  background-color: #578bbe; /* biru muda */
+  color: white;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.footer {
+  color: #888;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 0.9rem;
+}
